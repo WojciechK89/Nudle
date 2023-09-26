@@ -28,13 +28,14 @@ const {
   const result = await ocr.recognize(screenshot);
   const emailCoords = result.getElementsByText('Email')[0];
   const passwordCoords = result.getElementsByText('Password');
+  const ContactsCoords = result.getElementsByText('Search Contacts');
   const loginButton = result.getElementsByText('Login')[1];
   console.log(passwordCoords)
 
 
   await clickAndType(page, emailCoords, 'email@gmail.ocm');
   await clickAndType(page, passwordCoords[0], '!1234qWE');
-
+  await clickAndType(page, ContactsInput[0], '!1234qWE');
 
   await page.mouse.click(loginButton.x, loginButton.y);
   await sleep(10000);
@@ -46,7 +47,7 @@ const {
 
 async function clickAndType(page, coords, text) {
   await page.mouse.click(coords.x, coords.y);
-  const emailInput = await page.waitForSelector(">>>input");
-  await emailInput.type(text);
+  const input = await page.waitForSelector(">>>input");
+  await input.type(text);
   await sleep(500);
 }

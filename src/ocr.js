@@ -18,18 +18,33 @@ module.exports = class Ocr {
     const jimpImage = await Jimp.read(image);
     await jimpImage.writeAsync('lastScreenShot.jpg');
 
-    const processedImage = await jimpImage.normalize().invert().threshold({ max: 106, replace: 0, autoGreyscale: true });
-
+    const processedImage = await jimpImage.clone().normalize().invert().threshold({ max: 106, replace: 0, autoGreyscale: true });
+    const processedImage2 = await jimpImage.clone().normalize().invert().threshold({ max: 106, replace: 0, autoGreyscale: false });
+    const processedImage3 = await jimpImage.clone().normalize().invert().threshold({ max: 17, replace: 9, autoGreyscale: true });
     await processedImage.writeAsync('lastScreenShotProcessed.jpg');
+    await processedImage2.writeAsync('lastScreenShotProcessed2.jpg');
+    await processedImage3.writeAsync('lastScreenShotProcessed3.jpg');
     const buffer = await processedImage.getBufferAsync('image/jpeg');
-
+    const buffer2 = await processedImage2.getBufferAsync('image/jpeg');
+    const buffer3 = await processedImage3.getBufferAsync('image/jpeg');
     const resultsUnprocessed = await this.#worker.recognize(image, {});
     const resultsProcessed = await this.#worker.recognize(buffer, {});
+    const resultsProcessed2 = await this.#worker.recognize(buffer2, {});
+    const resultsProcessed3 = await this.#worker.recognize(buffer3, {});
 
-    // console.log(resultsUnprocessed.data.text)
-    // console.log(resultsProcessed.data.text)
+    console.log('===================resultsUnProcessed===================')
+    console.log(resultsUnprocessed.data.text)
+    console.log('===================resultsProcessed===================')
+    console.log(resultsProcessed.data.text)
+    console.log('===================resultsProcessed2==================')
+    console.log(resultsProcessed2.data.text)
+    console.log('===================resultsProcessed3==================')
+    console.log(resultsProcessed3.data.text)
 
-    return new OcrResult([...resultsUnprocessed.data.lines, ...resultsProcessed.data.lines]);
+    return new OcrResult([...resultsUnprocessed.data.lines,
+       ...resultsProcessed.data.lines,
+        ...resultsProcessed2.data.lines,
+         ...resultsProcessed3.data.lines]);
   }
 
   async terminate() {
@@ -53,6 +68,7 @@ class OcrResult {
     return filteredLines.map((l) => {
       const x = (l.bbox.x0 + l.bbox.x1) / 2;
       const y = (l.bbox.y0 + l.bbox.y1) / 2;
+      console.log({ x, y });
       return { x, y }
     });
   }
