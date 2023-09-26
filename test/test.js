@@ -117,7 +117,7 @@ describe('Swapix automation', function () {
 
 
 
-		it.skip('Open My Settings main section', async function () {
+		it('Open My Settings main section', async function () {
 			await login();
 			await clickAtText('MY SETTINGS');
 			await clickAtText('MANAGE MY CARD');
