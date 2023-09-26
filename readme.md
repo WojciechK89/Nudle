@@ -1,10 +1,10 @@
 # Description:
+First if you don't have already insstall node.js
 
-# Install:
-
+## Install:
 npm ci
 
-# Create file "config.js" in the main folder and add there this script:
+### Create file "config.js" in the main folder and add there this script:
 ```
 const URL = "https://lerex-prepoduction.d3pj531ws5mydw.amplifyapp.com/#/login";
 const EMAIL = 'your@emial.com;
@@ -20,8 +20,5 @@ module.exports = {
 
 ```
 
-
-# Run
-
-node index.js
-
+### Run
+npm test
