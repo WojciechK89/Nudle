@@ -3,6 +3,7 @@ const puppeteer = require("puppeteer");
 
 const Ocr = require('../src/ocr');
 
+const { BUTTONS } = require('../src/elements')
 const {
 	sleep,
 	clickAndType,
@@ -42,6 +43,10 @@ describe('Swapix automation', function () {
 
 		await page.waitForSelector("flt-glass-pane");
 		await sleep(1000);
+		await page.evaluate(() => {
+			window.onclick = (event) => console.log(event.x, event.y)
+		  });
+
 		context = {
 			ocr,
 			browser,
@@ -86,7 +91,12 @@ describe('Swapix automation', function () {
 			// await clickAtText(context, 'MY SPENDING')
 			// await waitForText(context, 'MY SPENDING')
 			// await sleep(1000);w
-			await clickAtText(context, 'Walle');
+			await clickAtText(context, 'Activity', 0);
+			await clickAtText(context, 'Back');
+			//await sleep(3000)
+			//await clickAtText(context, 'Activity', 1);
+			
+			//
 
 			await sleep(10000)
 			//await waitForText('MANAGE MY CARD(S)')
@@ -122,8 +132,10 @@ describe('Swapix automation', function () {
 			await clickAtText(context, 'CARD SECURITY');
 			await clickAtText(context, 'MY PHYSICAL');
 			await clickAtText(context, 'CHANGE MY PIN');
-			await clickAtText(context, 'Back');
+			await sleep(5000)
+			await page.mouse.click(BUTTONS.CANCELL.x, BUTTONS.CANCELL.y);
 			//await clickAtText('Cancel');
+
 			await clickAtText(context, 'RETRIEVE MY PIN');
 			await clickAtText(context, 'Back');
 			await clickAtText(context, 'MANAGE PERMISSIONS');
@@ -271,7 +283,7 @@ describe('Swapix automation', function () {
 			await waitForText(context, 'VIGURI')
 			await sleep(1000)
 
-		
+
 		});
 
 	});
