@@ -1,12 +1,16 @@
 const assert = require('assert');
 const puppeteer = require("puppeteer");
-const { expect } = require('chai');
+
 const Ocr = require('../src/ocr');
 
 const {
 	sleep,
 	clickAndType,
-	waitFor
+	waitFor,
+	typeText,
+	clickAndTypeText,
+	clickAtText,
+	waitForText
 } = require('../src/helpers');
 const {
 	EMAIL,
@@ -20,7 +24,7 @@ describe('Swapix automation', function () {
 	let ocr;
 	let browser;
 	let page;
-
+	let context;
 
 	before(async function () {
 		ocr = new Ocr();
@@ -38,6 +42,11 @@ describe('Swapix automation', function () {
 
 		await page.waitForSelector("flt-glass-pane");
 		await sleep(1000);
+		context = {
+			ocr,
+			browser,
+			page,
+		}
 	});
 
 	afterEach(async function () {
@@ -47,13 +56,13 @@ describe('Swapix automation', function () {
 	describe('Opening Login page and auto logout', function () {
 		it.skip('should be able to login', async function () {
 			await login();
-			await waitForText('GBP')
+			await waitForText(context, 'GBP')
 		});
 
 		it.skip('should be able to login and logout after 95 seconds', async function () {
 			await login();
 			await sleep(96000);
-			await waitForText('logout due to inactivity')
+			await waitForText(context, 'logout due to inactivity')
 		});
 	});
 
@@ -63,21 +72,23 @@ describe('Swapix automation', function () {
 
 		it.skip('Should be able to open MY BALANCE section section', async function () {
 			await login();
-			await clickAtText('GBP')
-			await waitForText('2023')
+			await clickAtText(context, 'GBP')
+			await waitForText(context, '2023')
 		});
 
 
-		it.skip('Should be able to open my money section and then my wallet activity', async function () {
+		it.only('Should be able to open my money section and then my wallet activity', async function () {
 			await login();
-			await clickAtText('MY MONEY')
-			await waitForText('MY WALLETS')
-			await sleep(1000);
-			await clickAtText('Back');
-			await clickAtText('MY SPENDING')
-			await waitForText('MY SPENDING')
-			await sleep(1000);
-			//await waitForText('My Wallet Activity')
+			await clickAtText(context, 'MY MONEY')
+			await waitForText(context, 'MY WALLETS')
+			//await sleep(1000);
+			// await clickAtText(context, 'Back');
+			// await clickAtText(context, 'MY SPENDING')
+			// await waitForText(context, 'MY SPENDING')
+			// await sleep(1000);w
+			await clickAtText(context, 'Walle');
+
+			await sleep(10000)
 			//await waitForText('MANAGE MY CARD(S)')
 
 		});
@@ -93,50 +104,50 @@ describe('Swapix automation', function () {
 
 		it.skip('Open My Security main section', async function () {
 			await login();
-			await clickAtText('MY SECURITY');
-			await clickAtText('CARD SECURITY');
-			await clickAtText('Back');
-			await clickAtText('CHANGE MY PASSWORD');
-			await clickAtText('Back');
-			await clickAtText('CONFIGURE');
-			await clickAtText('Back');
-			await clickAtText('2 FACTOR AUTHENTICATION');
-			await clickAtText('Back');
+			await clickAtText(context, 'MY SECURITY');
+			await clickAtText(context, 'CARD SECURITY');
+			await clickAtText(context, 'Back');
+			await clickAtText(context, 'CHANGE MY PASSWORD');
+			await clickAtText(context, 'Back');
+			await clickAtText(context, 'CONFIGURE');
+			await clickAtText(context, 'Back');
+			await clickAtText(context, '2 FACTOR AUTHENTICATION');
+			await clickAtText(context, 'Back');
 
 		});
 
 		it.skip('Should be able to open My Physical Card section', async function () {
 			await login();
-			await clickAtText('MY SECURITY');
-			await clickAtText('CARD SECURITY');
-			await clickAtText('MY PHYSICAL');
-			await clickAtText('CHANGE MY PIN');
-			await clickAtText('Back');
+			await clickAtText(context, 'MY SECURITY');
+			await clickAtText(context, 'CARD SECURITY');
+			await clickAtText(context, 'MY PHYSICAL');
+			await clickAtText(context, 'CHANGE MY PIN');
+			await clickAtText(context, 'Back');
 			//await clickAtText('Cancel');
-			await clickAtText('RETRIEVE MY PIN');
-			await clickAtText('Back');
-			await clickAtText('MANAGE PERMISSIONS');
-			await clickAtText('Back');
-			await clickAtText('BLOCK MY CARD');
-			await clickAtText('Back');
-			await clickAtText('REPORT MY CARD LOST OR STOLEN');
-			await clickAtText('Back');
+			await clickAtText(context, 'RETRIEVE MY PIN');
+			await clickAtText(context, 'Back');
+			await clickAtText(context, 'MANAGE PERMISSIONS');
+			await clickAtText(context, 'Back');
+			await clickAtText(context, 'BLOCK MY CARD');
+			await clickAtText(context, 'Back');
+			await clickAtText(context, 'REPORT MY CARD LOST OR STOLEN');
+			await clickAtText(context, 'Back');
 			await sleep(1000);
 		});
 
 		it.skip('Should be able to open My Virtual Card section', async function () {
 			await login();
-			await clickAtText('MY SECURITY');
-			await clickAtText('CARD SECURITY');
-			await clickAtText('MY VIRTUAL');
-			await clickAtText('MANAGE PERMISSIONS');
-			await clickAtText('Back');
-			await clickAtText('BLOCK MY CARD');
-			await clickAtText('Back');
-			await clickAtText('REPORT MY CARD LOST OR STOLEN');
-			await clickAtText('Back');
+			await clickAtText(context, 'MY SECURITY');
+			await clickAtText(context, 'CARD SECURITY');
+			await clickAtText(context, 'MY VIRTUAL');
+			await clickAtText(context, 'MANAGE PERMISSIONS');
+			await clickAtText(context, 'Back');
+			await clickAtText(context, 'BLOCK MY CARD');
+			await clickAtText(context, 'Back');
+			await clickAtText(context, 'REPORT MY CARD LOST OR STOLEN');
+			await clickAtText(context, 'Back');
 			//await clickAtText('Cancel');
-		
+
 			await sleep(1000);
 		});
 
@@ -144,119 +155,123 @@ describe('Swapix automation', function () {
 
 		it('Open My Settings main section', async function () {
 			await login();
-			await clickAtText('MY SETTINGS');
-			await clickAtText('MANAGE MY CARD');
-			await clickAtText('Back');
-			await clickAtText('ACCOUNT DETAILS');
-			await clickAtText('Back');
-			await clickAtText('MANAGE BENEFICIARIES');
-			await clickAtText('Back');
-			await clickAtText('UPDATE MY DETAILS');
-			await clickAtText('Back');
-			await clickAtText('CHANGE MY PASSWORD');
-			await clickAtText('Back');
+			await clickAtText(context, 'MY SETTINGS');
+			await clickAtText(context, 'MANAGE MY CARD');
+			await clickAtText(context, 'Back');
+			await clickAtText(context, 'ACCOUNT DETAILS');
+			await clickAtText(context, 'Back');
+			await clickAtText(context, 'MANAGE BENEFICIARIES');
+			await clickAtText(context, 'Back');
+			await clickAtText(context, 'UPDATE MY DETAILS');
+			await clickAtText(context, 'Back');
+			await clickAtText(context, 'CHANGE MY PASSWORD');
+			await clickAtText(context, 'Back');
 
 		});
 
 		it('Should be able to open My Physical Card section', async function () {
 			await login();
-			await clickAtText('MY SETTINGS');
-			await clickAtText('MANAGE MY CARD(S)');
-			await clickAtText('MY PHYSICAL');
+			await clickAtText(context, 'MY SETTINGS');
+			await clickAtText(context, 'MANAGE MY CARD(S)');
+			await clickAtText(context, 'MY PHYSICAL');
 
-			await clickAtText('ATM Withdrawals');
+			await clickAtText(context, 'ATM Withdrawals');
 
-			await clickAtText('POS In-store transactions');
+			await clickAtText(context, 'POS In-store transactions');
 
 
-			await clickAtText('E-Commerce transactions');
+			await clickAtText(context, 'E-Commerce transactions');
 
-			await clickAtText('Mail & Phone transactions');
+			await clickAtText(context, 'Mail & Phone transactions');
 
-			await clickAtText('Contactless transactions');
-			
+			await clickAtText(context, 'Contactless transactions');
+
 			await sleep(1000);
 		});
 
 		it.skip('Should be able to open My Physical Card section', async function () {
 			await login();
-			await clickAtText('MY SETTINGS');
-			await clickAtText('MANAGE MY CARD(S)');
-			await clickAtText('MY VIRTUAL');
-			await clickAtText('Back');
+			await clickAtText(context, 'MY SETTINGS');
+			await clickAtText(context, 'MANAGE MY CARD(S)');
+			await clickAtText(context, 'MY VIRTUAL');
+			await clickAtText(context, 'Back');
 			await sleep(1000);
 		});
 
 		it.skip('Should be able to open My Virtual Card section', async function () {
 			await login();
-			await clickAtText('MY SETTINGS');
-			await clickAtText('CARD SECURITY');
-			await clickAtText('MY VIRTUAL');
-			await clickAtText('MANAGE PERMISSIONS');
-			await clickAtText('Back');
-			await clickAtText('BLOCK MY CARD');
-			await clickAtText('Back');
-			await clickAtText('REPORT MY CARD LOST OR STOLEN');
-			await clickAtText('Back');
+			await clickAtText(context, 'MY SETTINGS');
+			await clickAtText(context, 'CARD SECURITY');
+			await clickAtText(context, 'MY VIRTUAL');
+			await clickAtText(context, 'MANAGE PERMISSIONS');
+			await clickAtText(context, 'Back');
+			await clickAtText(context, 'BLOCK MY CARD');
+			await clickAtText(context, 'Back');
+			await clickAtText(context, 'REPORT MY CARD LOST OR STOLEN');
+			await clickAtText(context, 'Back');
 			//await clickAtText('Cancel');
-		
+
 			await sleep(1000);
 		});
 
 
 		it.skip('Should be able to open  More section', async function () {
 			await login();
-			await clickAtText('MORE');
-			await clickAtText('MY CONTACTS');
-			await clickAtText('Back');
-			await clickAtText('MY LIMITS');
-			await clickAtText('Back');
-			await clickAtText('MY FEES');
-			await clickAtText('Back');
-			await clickAtText('FX CALCULATOR');
-			await clickAtText('Back');
-			await clickAtText('MY NOTIFICATIONS');
-			await clickAtText('Back');
-			await clickAtText('EXPORT MY TRANSACTIONS');
-			await clickAtText('Back');
-			await clickAtText('CONTACT US');
-			await clickAtText('Back');
+			await clickAtText(context, 'MORE');
+			await clickAtText(context, 'MY CONTACTS');
+			await clickAtText(context, 'Back');
+			await clickAtText(context, 'MY LIMITS');
+			await clickAtText(context, 'Back');
+			await clickAtText(context, 'MY FEES');
+			await clickAtText(context, 'Back');
+			await clickAtText(context, 'FX CALCULATOR');
+			await clickAtText(context, 'Back');
+			await clickAtText(context, 'MY NOTIFICATIONS');
+			await clickAtText(context, 'Back');
+			await clickAtText(context, 'EXPORT MY TRANSACTIONS');
+			await clickAtText(context, 'Back');
+			await clickAtText(context, 'CONTACT US');
+			await clickAtText(context, 'Back');
 		});
 
 		//More section pages openig in the new window
 		it.skip('Should be able to open  More section-FAQ', async function () {
 			await login();
-			await clickAtText('MORE');
-			await clickAtText('TERMS AND CONDITIONS');
+			await clickAtText(context, 'MORE');
+			await clickAtText(context, 'TERMS AND CONDITIONS');
 			await sleep(1500);
 		});
 		it.skip('Should be able to open  More section-FAQ', async function () {
 			await login();
-			await clickAtText('MORE');
-			await clickAtText('PRIVACY POLICY');
+			await clickAtText(context, 'MORE');
+			await clickAtText(context, 'PRIVACY POLICY');
 			await sleep(2000);
 		});
 		it.skip('Should be able to open  More section-FAQ', async function () {
 			await login();
-			await clickAtText('MORE');
-			await clickAtText('FAQ');
+			await clickAtText(context, 'MORE');
+			await clickAtText(context, 'FAQ');
 			await sleep(3000);
 
 		});
 
 		it.skip('Should be able to open More section', async function () {
 			await login();
-			await clickAtText('MORE')
-			await clickAtText('MY CONTACTS')
-			await clickAtText('INVITE YOUR FRIENDS')
+			await clickAtText(context, 'MORE')
+			await clickAtText(context, 'MY CONTACTS')
+			await clickAtText(context, 'INVITE YOUR FRIENDS')
 			//await waitForText('MY CONTACTS')
 		});
 
-		it.skip('Should be able to open  My Contacts section', async function () {
+		it('Should be able to open  My Contacts section', async function () {
 			await login();
-			await clickAtText('MORE');
-			await clickAtText('MY CONTACTS');
-			await waitForText('Tell your');
+			await clickAtText(context, 'MORE');
+			await clickAtText(context, 'MY CONTACTS');
+			await clickAndTypeText(context, 'Search Contacts', 'jo')
+			await waitForText(context, 'VIGURI')
+			await sleep(1000)
+
+		
 		});
 
 	});
@@ -267,27 +282,9 @@ describe('Swapix automation', function () {
 		const emailCoords = result.getElementsByText('Email')[0];
 		const passwordCoords = result.getElementsByText('Password');
 		const loginButton = result.getElementsByText('Login')[1];
-		await clickAndType(page, emailCoords, EMAIL);
-		await clickAndType(page, passwordCoords[0], PASSWORD);
+		await clickAndType(context, emailCoords, EMAIL);
+		await clickAndType(context, passwordCoords[0], PASSWORD);
 		await page.mouse.click(loginButton.x, loginButton.y);
-
-	}
-
-	async function clickAtText(text, index = 0) {
-		await waitForText(text);
-		const screenshot = await page.screenshot({ type: 'jpeg', quality: 100 });
-		const result = await ocr.recognize(screenshot);
-		const coords = result.getElementsByText(text)[index];
-		await page.mouse.click(coords.x, coords.y);
-	}
-
-	async function waitForText(text) {
-		await waitFor(async () => {
-			const screenshot = await page.screenshot({ type: 'jpeg', quality: 100 });
-			const result = await ocr.recognize(screenshot);
-			const elements = result.getElementsByText(text);
-			expect(elements.length).to.be.least(1);
-		}, 20);
 	}
 
 });

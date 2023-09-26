@@ -47,13 +47,7 @@ const {
 
 async function clickAndType(page, coords, text) {
   await page.mouse.click(coords.x, coords.y);
-  const emailInput = await page.waitForSelector(">>>input");
-  await emailInput.type(text);
-  await sleep(500);
-}
-async function clickAndType(page, coords, text) {
-  await page.mouse.click(coords.x, coords.y);
-  const ContactsInput = await page.waitForSelector(">>>input");
-  await ContactsInput.type(text);
+  const input = await page.waitForSelector(">>>input");
+  await input.type(text);
   await sleep(500);
 }

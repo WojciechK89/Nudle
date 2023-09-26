@@ -18,18 +18,25 @@ module.exports = class Ocr {
     const jimpImage = await Jimp.read(image);
     await jimpImage.writeAsync('lastScreenShot.jpg');
 
-    const processedImage = await jimpImage.normalize().invert().threshold({ max: 106, replace: 0, autoGreyscale: true });
-
+    const processedImage = await jimpImage.clone().normalize().invert().threshold({ max: 106, replace: 0, autoGreyscale: true });
+    const processedImage2 = await jimpImage.clone().normalize().invert().threshold({ max: 106, replace: 0, autoGreyscale: false });
+    //const processedImage2 = await jimpImage.clone().normalize().invert().threshold({ max: 50, replace: 50, autoGreyscale: false });
     await processedImage.writeAsync('lastScreenShotProcessed.jpg');
+    await processedImage2.writeAsync('lastScreenShotProcessed2.jpg');
     const buffer = await processedImage.getBufferAsync('image/jpeg');
-
+    const buffer2 = await processedImage2.getBufferAsync('image/jpeg');
     const resultsUnprocessed = await this.#worker.recognize(image, {});
     const resultsProcessed = await this.#worker.recognize(buffer, {});
+    const resultsProcessed2 = await this.#worker.recognize(buffer2, {});
 
-    // console.log(resultsUnprocessed.data.text)
-    // console.log(resultsProcessed.data.text)
+    console.log('===================resultsUnProcessed===================')
+    console.log(resultsUnprocessed.data.text)
+    console.log('===================resultsProcessed===================')
+    console.log(resultsProcessed.data.text)
+    console.log('===================resultsProcessed2==================')
+    console.log(resultsProcessed2.data.text)
 
-    return new OcrResult([...resultsUnprocessed.data.lines, ...resultsProcessed.data.lines]);
+    return new OcrResult([...resultsUnprocessed.data.lines, ...resultsProcessed.data.lines, ...resultsProcessed2.data.lines]);
   }
 
   async terminate() {
