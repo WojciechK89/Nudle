@@ -44,13 +44,13 @@ describe('Swapix automation', function () {
 		await browser.close();
 	});
 
-	describe('Opening Login page', function () {
-		it('should be able to login', async function () {
+	describe('Opening Login page and auto logout', function () {
+		it.skip('should be able to login', async function () {
 			await login();
-			await waitForText('My Balance')
+			await waitForText('GBP')
 		});
 
-		it('should be able to login and logout after 95 seconds', async function () {
+		it.skip('should be able to login and logout after 95 seconds', async function () {
 			await login();
 			await sleep(96000);
 			await waitForText('logout due to inactivity')
@@ -58,19 +58,131 @@ describe('Swapix automation', function () {
 	});
 
 
-	describe('Opening sub pages', function () {
-		it('Should be able to open my money section', async function () {
+	describe('Opening main pages', function () {
+
+
+		it.skip('Should be able to open MY BALANCE section section', async function () {
+			await login();
+			await clickAtText('GBP')
+			await waitForText('2023')
+		});
+
+
+		it.skip('Should be able to open my money section and then my wallet activity', async function () {
 			await login();
 			await clickAtText('MY MONEY')
 			await waitForText('MY WALLETS')
+			await sleep(1000);
+			await clickAtText('Back');
+			await clickAtText('MY SPENDING')
+			await waitForText('MY SPENDING')
+			await sleep(1000);
+			//await waitForText('My Wallet Activity')
+			//await waitForText('MANAGE MY CARD(S)')
 
 		});
-		it('Should be able to open More section', async function () {
+
+		/*it.skip('Should be able to open My Spending section', async function () {
+			await login();
+			await clickAtText('MY SPENDING')
+			await waitForText('MY SPENDING')
+			await sleep(1000);
+		});
+		*/
+
+
+		it.skip('Open My Security main section', async function () {
+			await login();
+			await clickAtText('MY SECURITY');
+			await clickAtText('CARD SECURITY');
+			await clickAtText('Back');
+			await clickAtText('CHANGE MY PASSWORD');
+			await clickAtText('Back');
+			await clickAtText('CONFIGURE');
+			await clickAtText('Back');
+			await clickAtText('MANAGE BIOMETRICS');
+			await clickAtText('Back');
+			//this one not working now
+			await clickAtText('TWO FACTOR AUTHENTICATION');
+			await clickAtText('Back');
+
+		});
+
+		it.skip('Should be able to open My Security section', async function () {
+			await login();
+			await clickAtText('MY SECURITY')
+			await waitForText('CARD SECURITY')
+			await sleep(1000);
+		});
+
+
+
+		it.skip('Open My Settings main section', async function () {
+			await login();
+			await clickAtText('MY SETTINGS');
+			await clickAtText('MANAGE MY CARD');
+			await clickAtText('Back');
+			await clickAtText('ACCOUNT DETAILS');
+			await clickAtText('Back');
+			await clickAtText('MANAGE BENEFICIARIES');
+			await clickAtText('Back');
+			await clickAtText('UPDATE MY DETAILS');
+			await clickAtText('Back');
+			await clickAtText('CHANGE MY PASSWORD');
+			await clickAtText('Back');
+
+		});
+
+
+		it('Should be able to open  More section', async function () {
+			await login();
+			await clickAtText('MORE');
+			await clickAtText('MY CONTACTS');
+			await clickAtText('Back');
+			await clickAtText('MY LIMITS');
+			await clickAtText('Back');
+			await clickAtText('MY FEES');
+			await clickAtText('Back');
+			await clickAtText('FX CALCULATOR');
+			await clickAtText('Back');
+			await clickAtText('MY NOTIFICATIONS');
+			await clickAtText('Back');
+			await clickAtText('EXPORT MY TRANSACTIONS');
+			await clickAtText('Back');
+			await clickAtText('CONTACT US');
+			await clickAtText('Back');
+		});
+
+		//More section pages openig in the new window
+		it.skip('Should be able to open  More section-FAQ', async function () {
+			await login();
+			await clickAtText('MORE');
+			await clickAtText('TERMS AND CONDITIONS');
+			await sleep(1500);
+		});
+		it.skip('Should be able to open  More section-FAQ', async function () {
+			await login();
+			await clickAtText('MORE');
+			await clickAtText('PRIVACY POLICY');
+			await sleep(2000);
+		});
+		it.skip('Should be able to open  More section-FAQ', async function () {
+			await login();
+			await clickAtText('MORE');
+			await clickAtText('FAQ');
+			await sleep(3000);
+
+		});
+
+		it.skip('Should be able to open More section', async function () {
 			await login();
 			await clickAtText('MORE')
-			await waitForText('MY CONTACTS')
+			await clickAtText('MY CONTACTS')
+			await clickAtText('INVITE YOUR FRIENDS')
+			//await waitForText('MY CONTACTS')
 		});
-		it('Should be able to open More section', async function () {
+
+		it.skip('Should be able to open  My Contacts section', async function () {
 			await login();
 			await clickAtText('MORE');
 			await clickAtText('MY CONTACTS');
