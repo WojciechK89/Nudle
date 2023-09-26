@@ -100,18 +100,43 @@ describe('Swapix automation', function () {
 			await clickAtText('Back');
 			await clickAtText('CONFIGURE');
 			await clickAtText('Back');
-			await clickAtText('MANAGE BIOMETRICS');
-			await clickAtText('Back');
-			//this one not working now
-			await clickAtText('TWO FACTOR AUTHENTICATION');
+			await clickAtText('2 FACTOR AUTHENTICATION');
 			await clickAtText('Back');
 
 		});
 
-		it.skip('Should be able to open My Security section', async function () {
+		it.skip('Should be able to open My Physical Card section', async function () {
 			await login();
-			await clickAtText('MY SECURITY')
-			await waitForText('CARD SECURITY')
+			await clickAtText('MY SECURITY');
+			await clickAtText('CARD SECURITY');
+			await clickAtText('MY PHYSICAL');
+			await clickAtText('CHANGE MY PIN');
+			await clickAtText('Back');
+			//await clickAtText('Cancel');
+			await clickAtText('RETRIEVE MY PIN');
+			await clickAtText('Back');
+			await clickAtText('MANAGE PERMISSIONS');
+			await clickAtText('Back');
+			await clickAtText('BLOCK MY CARD');
+			await clickAtText('Back');
+			await clickAtText('REPORT MY CARD LOST OR STOLEN');
+			await clickAtText('Back');
+			await sleep(1000);
+		});
+
+		it.skip('Should be able to open My Virtual Card section', async function () {
+			await login();
+			await clickAtText('MY SECURITY');
+			await clickAtText('CARD SECURITY');
+			await clickAtText('MY VIRTUAL');
+			await clickAtText('MANAGE PERMISSIONS');
+			await clickAtText('Back');
+			await clickAtText('BLOCK MY CARD');
+			await clickAtText('Back');
+			await clickAtText('REPORT MY CARD LOST OR STOLEN');
+			await clickAtText('Back');
+			//await clickAtText('Cancel');
+		
 			await sleep(1000);
 		});
 
@@ -133,8 +158,53 @@ describe('Swapix automation', function () {
 
 		});
 
+		it('Should be able to open My Physical Card section', async function () {
+			await login();
+			await clickAtText('MY SETTINGS');
+			await clickAtText('MANAGE MY CARD(S)');
+			await clickAtText('MY PHYSICAL');
 
-		it('Should be able to open  More section', async function () {
+			await clickAtText('ATM Withdrawals');
+
+			await clickAtText('POS In-store transactions');
+
+
+			await clickAtText('E-Commerce transactions');
+
+			await clickAtText('Mail & Phone transactions');
+
+			await clickAtText('Contactless transactions');
+			
+			await sleep(1000);
+		});
+
+		it.skip('Should be able to open My Physical Card section', async function () {
+			await login();
+			await clickAtText('MY SETTINGS');
+			await clickAtText('MANAGE MY CARD(S)');
+			await clickAtText('MY VIRTUAL');
+			await clickAtText('Back');
+			await sleep(1000);
+		});
+
+		it.skip('Should be able to open My Virtual Card section', async function () {
+			await login();
+			await clickAtText('MY SETTINGS');
+			await clickAtText('CARD SECURITY');
+			await clickAtText('MY VIRTUAL');
+			await clickAtText('MANAGE PERMISSIONS');
+			await clickAtText('Back');
+			await clickAtText('BLOCK MY CARD');
+			await clickAtText('Back');
+			await clickAtText('REPORT MY CARD LOST OR STOLEN');
+			await clickAtText('Back');
+			//await clickAtText('Cancel');
+		
+			await sleep(1000);
+		});
+
+
+		it.skip('Should be able to open  More section', async function () {
 			await login();
 			await clickAtText('MORE');
 			await clickAtText('MY CONTACTS');
