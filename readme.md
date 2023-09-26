@@ -1,5 +1,5 @@
 # Description:
-First if you don't have already insstall node.js
+First if you don't have already install node.js
 
 ## Install:
 npm ci
