@@ -59,12 +59,12 @@ describe('Swapix automation', function () {
 	});
 
 	describe('Opening Login page and auto logout', function () {
-		it.skip('should be able to login', async function () {
+		it('should be able to login', async function () {
 			await login();
 			await waitForText(context, 'GBP')
 		});
 
-		it.skip('should be able to login and logout after 95 seconds', async function () {
+		it('should be able to login and logout after 95 seconds', async function () {
 			await login();
 			await sleep(96000);
 			await waitForText(context, 'logout due to inactivity')
@@ -75,14 +75,14 @@ describe('Swapix automation', function () {
 	describe('Opening main pages', function () {
 
 
-		it.skip('Should be able to open MY BALANCE section section', async function () {
+		it('Should be able to open MY BALANCE section section', async function () {
 			await login();
 			await clickAtText(context, 'GBP')
 			await waitForText(context, '2023')
 		});
 
 
-		it.only('Should be able to open my money section and then my wallet activity', async function () {
+		it('Should be able to open my money section and then my wallet activity', async function () {
 			await login();
 			await clickAtText(context, 'MY MONEY')
 			await waitForText(context, 'MY WALLETS')
@@ -98,7 +98,7 @@ describe('Swapix automation', function () {
 			
 			//
 
-			await sleep(10000)
+			await sleep(1000)
 			//await waitForText('MANAGE MY CARD(S)')
 
 		});
@@ -112,7 +112,7 @@ describe('Swapix automation', function () {
 		*/
 
 
-		it.skip('Open My Security main section', async function () {
+		it('Open My Security main section', async function () {
 			await login();
 			await clickAtText(context, 'MY SECURITY');
 			await clickAtText(context, 'CARD SECURITY');
@@ -126,7 +126,7 @@ describe('Swapix automation', function () {
 
 		});
 
-		it.skip('Should be able to open My Physical Card section', async function () {
+		it('Should be able to open My Physical Card section', async function () {
 			await login();
 			await clickAtText(context, 'MY SECURITY');
 			await clickAtText(context, 'CARD SECURITY');
@@ -147,7 +147,7 @@ describe('Swapix automation', function () {
 			await sleep(1000);
 		});
 
-		it.skip('Should be able to open My Virtual Card section', async function () {
+		it('Should be able to open My Virtual Card section', async function () {
 			await login();
 			await clickAtText(context, 'MY SECURITY');
 			await clickAtText(context, 'CARD SECURITY');
@@ -201,7 +201,7 @@ describe('Swapix automation', function () {
 			await sleep(1000);
 		});
 
-		it.skip('Should be able to open My Physical Card section', async function () {
+		it('Should be able to open My Physical Card section', async function () {
 			await login();
 			await clickAtText(context, 'MY SETTINGS');
 			await clickAtText(context, 'MANAGE MY CARD(S)');
@@ -210,7 +210,7 @@ describe('Swapix automation', function () {
 			await sleep(1000);
 		});
 
-		it.skip('Should be able to open My Virtual Card section', async function () {
+		it('Should be able to open My Virtual Card section', async function () {
 			await login();
 			await clickAtText(context, 'MY SETTINGS');
 			await clickAtText(context, 'CARD SECURITY');
@@ -227,7 +227,7 @@ describe('Swapix automation', function () {
 		});
 
 
-		it.skip('Should be able to open  More section', async function () {
+		it('Should be able to open  More section', async function () {
 			await login();
 			await clickAtText(context, 'MORE');
 			await clickAtText(context, 'MY CONTACTS');
@@ -247,19 +247,19 @@ describe('Swapix automation', function () {
 		});
 
 		//More section pages openig in the new window
-		it.skip('Should be able to open  More section-FAQ', async function () {
+		it('Should be able to open  More section-FAQ', async function () {
 			await login();
 			await clickAtText(context, 'MORE');
 			await clickAtText(context, 'TERMS AND CONDITIONS');
 			await sleep(1500);
 		});
-		it.skip('Should be able to open  More section-FAQ', async function () {
+		it('Should be able to open  More section-FAQ', async function () {
 			await login();
 			await clickAtText(context, 'MORE');
 			await clickAtText(context, 'PRIVACY POLICY');
 			await sleep(2000);
 		});
-		it.skip('Should be able to open  More section-FAQ', async function () {
+		it('Should be able to open  More section-FAQ', async function () {
 			await login();
 			await clickAtText(context, 'MORE');
 			await clickAtText(context, 'FAQ');
@@ -267,7 +267,7 @@ describe('Swapix automation', function () {
 
 		});
 
-		it.skip('Should be able to open More section', async function () {
+		it('Should be able to open More section', async function () {
 			await login();
 			await clickAtText(context, 'MORE')
 			await clickAtText(context, 'MY CONTACTS')
@@ -275,16 +275,36 @@ describe('Swapix automation', function () {
 			//await waitForText('MY CONTACTS')
 		});
 
-		it('Should be able to open  My Contacts section', async function () {
+		it('Should be able to open  My Contacts section and search user', async function () {
 			await login();
 			await clickAtText(context, 'MORE');
 			await clickAtText(context, 'MY CONTACTS');
 			await clickAndTypeText(context, 'Search Contacts', 'jo')
 			await waitForText(context, 'VIGURI')
-			await sleep(1000)
+			await sleep(5000)
 
 
 		});
+
+		// it.only('Should be able to open  My Contacts section and invite user', async function () {
+		// 	await login();
+		// 	await clickAtText(context, 'MORE');
+		// 	await clickAtText(context, 'MY CONTACTS');
+		// 	await clickAtText(context, 'INVITE YOUR FRIENDS');
+		// 	await sleep(5000)
+		// });
+
+		it.only('Should be able to open  My Contacts section and invite user', async function () {
+			await login();
+			await clickAtText(context, 'MORE');
+			await clickAtText(context, 'MY CONTACTS');
+			//await clickAtText(context, 'FRIENIIS');
+			await sleep(3000)
+			await page.mouse.click(BUTTONS.INVITEYOURFRIENDS.X, BUTTONS.INVITEYOURFRIENDS.Y);
+			await sleep(3000)
+			await clickAndTypeText(context, 'First name', 'Witold');
+		});
+
 
 	});
 

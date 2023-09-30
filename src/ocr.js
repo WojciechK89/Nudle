@@ -32,14 +32,14 @@ module.exports = class Ocr {
     const resultsProcessed2 = await this.#worker.recognize(buffer2, {});
     const resultsProcessed3 = await this.#worker.recognize(buffer3, {});
 
-    console.log('===================resultsUnProcessed===================')
-    console.log(resultsUnprocessed.data.text)
-    console.log('===================resultsProcessed===================')
-    console.log(resultsProcessed.data.text)
-    console.log('===================resultsProcessed2==================')
-    console.log(resultsProcessed2.data.text)
-    console.log('===================resultsProcessed3==================')
-    console.log(resultsProcessed3.data.text)
+    // console.log('===================resultsUnProcessed===================')
+    // console.log(resultsUnprocessed.data.text)
+    // console.log('===================resultsProcessed===================')
+    // console.log(resultsProcessed.data.text)
+    // console.log('===================resultsProcessed2==================')
+    // console.log(resultsProcessed2.data.text)
+    // console.log('===================resultsProcessed3==================')
+    // console.log(resultsProcessed3.data.text)
 
     return new OcrResult([...resultsUnprocessed.data.lines,
        ...resultsProcessed.data.lines,
