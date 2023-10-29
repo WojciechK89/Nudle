@@ -294,13 +294,13 @@ describe('Swapix automation', function () {
 		// 	await sleep(5000)
 		// });
 
-		it.only('Should be able to open  My Contacts section and invite user', async function () {
+		it('Should be able to open  My Contacts section and invite user', async function () {
 			await login();
 			await clickAtText(context, 'MORE');
 			await clickAtText(context, 'MY CONTACTS');
 			//await clickAtText(context, 'FRIENIIS');
 			await sleep(3000)
-			await page.mouse.click(BUTTONS.INVITEYOURFRIENDS.X, BUTTONS.INVITEYOURFRIENDS.Y);
+			await page.mouse.click(BUTTONS.INVITE_YOUR_FRIENDS.x, BUTTONS.INVITE_YOUR_FRIENDS.y);
 			await sleep(3000)
 			await clickAndTypeText(context, 'First name', 'Witold');
 		});

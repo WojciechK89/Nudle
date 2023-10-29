@@ -4,15 +4,22 @@ const Jimp = require("jimp");
 
 
 module.exports = class Ocr {
-  #worker;
+  #workers = [];
+  #lastWorker = 0;
+  #cores;
 
-  async init() {
-    this.#worker = await tesseract.createWorker();
-    await this.#worker.loadLanguage('eng');
-    await this.#worker.initialize('eng', tesseract.OEM.TESSERACT_LSTM_COMBINED);
-    await this.#worker.setParameters({
-      tessedit_pageseg_mode: tesseract.PSM.SPARSE_TEXT
-    })
+  async init(cores = 6) {
+    this.#cores = cores;
+    for(let i = 0; i < cores; i++){
+      const worker = await tesseract.createWorker();
+      await worker.loadLanguage('eng');
+      await worker.initialize('eng', tesseract.OEM.TESSERACT_LSTM_COMBINED);
+      await worker.setParameters({
+        tessedit_pageseg_mode: tesseract.PSM.SPARSE_TEXT
+      })
+      this.#workers.push(worker)
+    }
+
   }
   async recognize(image) {
     const jimpImage = await Jimp.read(image);
@@ -27,10 +34,10 @@ module.exports = class Ocr {
     const buffer = await processedImage.getBufferAsync('image/jpeg');
     const buffer2 = await processedImage2.getBufferAsync('image/jpeg');
     const buffer3 = await processedImage3.getBufferAsync('image/jpeg');
-    const resultsUnprocessed = await this.#worker.recognize(image, {});
-    const resultsProcessed = await this.#worker.recognize(buffer, {});
-    const resultsProcessed2 = await this.#worker.recognize(buffer2, {});
-    const resultsProcessed3 = await this.#worker.recognize(buffer3, {});
+    const resultsUnprocessed = await this.getWorker().recognize(image, {});
+    const resultsProcessed = await this.getWorker().recognize(buffer, {});
+    const resultsProcessed2 = await this.getWorker().recognize(buffer2, {});
+    const resultsProcessed3 = await this.getWorker().recognize(buffer3, {});
 
     // console.log('===================resultsUnProcessed===================')
     // console.log(resultsUnprocessed.data.text)
@@ -47,8 +54,31 @@ module.exports = class Ocr {
          ...resultsProcessed3.data.lines]);
   }
 
+
+  async recognizeParams(image, params){
+    const jimpImage = await Jimp.read(image);
+    
+    params.autoGreyscale = params.autoGreyscale ?? true;
+    
+    const processedImage = await jimpImage.clone().normalize().invert().threshold({ max: params.max, replace: params.replace, autoGreyscale: params.autoGreyscale });
+    const buffer = await processedImage.getBufferAsync('image/jpeg');
+    const resultsProcessed = await this.getWorker().recognize(buffer, {});
+    return new OcrResult(resultsProcessed.data.lines);
+  }
+
+  getWorker(){
+    const worker = this.#workers[this.#lastWorker];
+    this.#lastWorker++;
+    if(this.#lastWorker >= this.#cores){
+      this.#lastWorker = 0;
+    }
+    return worker;
+  }
+
   async terminate() {
-    return this.#worker.terminate();
+    return this.#workers.map(async (w) => {
+      await w.terminate();
+    })
   }
 }
 
